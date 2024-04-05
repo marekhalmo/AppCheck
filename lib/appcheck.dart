@@ -17,6 +17,15 @@ class AppInfo {
     this.isSystemApp,
   });
 
+  static AppInfo fromMap(Map<dynamic, dynamic> map) {
+    return AppInfo(
+      appName: map["app_name"],
+      packageName: map["package_name"],
+      versionName: map["version_name"],
+      isSystemApp: map["system_app"],
+    );
+  }
+
   @override
   String toString() {
     if (Platform.isAndroid) {
@@ -24,7 +33,7 @@ class AppInfo {
     } else if (Platform.isIOS) {
       return 'App - $packageName';
     } else {
-      throw UnimplementedError();
+      throw PlatformException(code: "404", message: "Platform not supported");
     }
   }
 }
@@ -48,18 +57,15 @@ class AppCheck {
         args,
       );
 
-      return AppInfo(
-        appName: app["app_name"],
-        packageName: app["package_name"],
-        versionName: app["version_name"],
-        isSystemApp: app["system_app"],
-      );
+      return AppInfo.fromMap(app);
     } else if (Platform.isIOS) {
       bool appAvailable =
           await _channel.invokeMethod("checkAvailability", args);
+
       if (!appAvailable) {
         throw PlatformException(code: "", message: "App not found $uri");
       }
+
       return AppInfo(packageName: uri);
     }
 
@@ -90,12 +96,7 @@ class AppCheck {
       List<AppInfo> list = [];
       for (var app in apps) {
         if (app is Map) {
-          list.add(AppInfo(
-            appName: app["app_name"],
-            packageName: app["package_name"],
-            versionName: app["version_name"],
-            isSystemApp: app["system_app"],
-          ));
+          list.add(AppInfo.fromMap(app));
         }
       }
 
