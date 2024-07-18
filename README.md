@@ -20,9 +20,11 @@ First, add `appcheck` as a [dependency in your pubspec.yaml file](https://flutte
 - `isAppEnabled(String uri)` (only for **Android**)
 - `launchApp(String uri)`
 
-
 ## Permissions
- If you want to use the `getInstalledApps()` function, you need the `QUERY_ALL_PACKAGES` permission.
+
+### Android
+
+If you want to use the `getInstalledApps()` function, you need the `QUERY_ALL_PACKAGES` permission.
 
  ```xml
 <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
@@ -36,7 +38,36 @@ First, add `appcheck` as a [dependency in your pubspec.yaml file](https://flutte
 </queries>
  ```
 
+### iOS
 
+Make sure your `Info.plist` file includes the necessary URL schemes under LSApplicationQueriesSchemes to check and launch other apps:
+
+```xml
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>scheme1</string>
+    <string>scheme2</string>
+    <!-- Add more schemes as needed -->
+</array>
+```
+
+Example:
+
+```xml
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>fb</string>
+    <string>twitter</string>
+    <string>instagram</string>
+    <string>whatsapp</string>
+    <string>youtube</string>
+    <string>comgooglemaps</string>
+    <string>http</string>
+    <string>https</string>
+    <string>mailto</string>
+    <!-- Add more schemes as needed -->
+</array>
+```
 
 Check out [Example](https://github.com/Yash-Garg/appcheck/blob/develop/example/lib/main.dart).
 

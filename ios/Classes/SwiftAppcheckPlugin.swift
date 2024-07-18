@@ -9,38 +9,42 @@ public class SwiftAppcheckPlugin: NSObject, FlutterPlugin {
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        var uriSchema = ""
-        let arguments = call.arguments as? NSDictionary
+        guard let arguments = call.arguments as? [String: Any],
+              let uriSchema = arguments["uri"] as? String else {
+            result(FlutterError(code: "INVALID_ARGUMENT", message: "Missing uri argument", details: nil))
+            return
+        }
+
         switch call.method {
         case "checkAvailability":
-            uriSchema = (arguments!["uri"] as? String)!
             result(checkAvailability(uri: uriSchema))
-            break
         case "launchApp":
-            uriSchema = (arguments!["uri"] as? String)!
             launchApp(uri: uriSchema, result: result)
-            break
         default:
-            break
+            result(FlutterMethodNotImplemented)
         }
     }
 
-    public func checkAvailability (uri: String) -> Bool {
-        let url = URL(string: uri)
-        return UIApplication.shared.canOpenURL(url!)
+    public func checkAvailability(uri: String) -> Bool {
+        guard let url = URL(string: uri) else {
+            return false
+        }
+        return UIApplication.shared.canOpenURL(url)
     }
 
-    public func launchApp (uri: String, result: @escaping FlutterResult) {
-        let url = URL(string: uri)
-        if (checkAvailability(uri: uri)) {
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(url!)
-            } else {
-                UIApplication.shared.openURL(url!)
+    public func launchApp(uri: String, result: @escaping FlutterResult) {
+        guard let url = URL(string: uri), checkAvailability(uri: uri) else {
+            result(false)
+            return
+        }
+
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:]) { success in
+                result(success)
             }
-            result(true)
+        } else {
+            let success = UIApplication.shared.openURL(url)
+            result(success)
         }
-        result(false)
     }
-
 }

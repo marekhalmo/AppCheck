@@ -1,6 +1,7 @@
-## 1.2.0
+## 1.3.0
 
-- Minor code cleanup and dependency updates
+- Minor code cleanup and dependency updates.
+- Fixes for iOS app launches and README instructions.
 
 ## 1.0.0
 
