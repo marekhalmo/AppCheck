@@ -16,6 +16,8 @@ class AppCheckExample extends StatefulWidget {
 }
 
 class _AppCheckExampleState extends State<AppCheckExample> {
+  final appCheck = AppCheck();
+
   List<AppInfo>? installedApps;
   List<AppInfo> iOSApps = [
     AppInfo(appName: "Calendar", packageName: "calshow://"),
@@ -33,18 +35,18 @@ class _AppCheckExampleState extends State<AppCheckExample> {
   Future<void> getApps() async {
     if (Platform.isAndroid) {
       const package = "com.google.android.apps.maps";
-      installedApps = await AppCheck.getInstalledApps();
+      installedApps = await appCheck.getInstalledApps();
       debugPrint(installedApps.toString());
 
-      await AppCheck.checkAvailability(package).then(
-        (app) => debugPrint(app.toString()),
-      );
+      await appCheck.checkAvailability(package).then(
+            (app) => debugPrint(app.toString()),
+          );
 
-      await AppCheck.isAppEnabled(package).then(
-        (enabled) => enabled
-            ? debugPrint('$package enabled')
-            : debugPrint('$package disabled'),
-      );
+      await appCheck.isAppEnabled(package).then(
+            (enabled) => enabled
+                ? debugPrint('$package enabled')
+                : debugPrint('$package disabled'),
+          );
 
       installedApps?.sort(
         (a, b) => a.appName!.toLowerCase().compareTo(b.appName!.toLowerCase()),
@@ -53,9 +55,9 @@ class _AppCheckExampleState extends State<AppCheckExample> {
       // iOS doesn't allow to get installed apps.
       installedApps = iOSApps;
 
-      await AppCheck.checkAvailability("calshow://").then(
-        (app) => debugPrint(app.toString()),
-      );
+      await appCheck.checkAvailability("calshow://").then(
+            (app) => debugPrint(app.toString()),
+          );
     }
 
     setState(() {
@@ -84,7 +86,7 @@ class _AppCheckExampleState extends State<AppCheckExample> {
                       icon: const Icon(Icons.open_in_new),
                       onPressed: () {
                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        AppCheck.launchApp(app.packageName).then((_) {
+                        appCheck.launchApp(app.packageName).then((_) {
                           debugPrint(
                             "${app.appName ?? app.packageName} launched!",
                           );

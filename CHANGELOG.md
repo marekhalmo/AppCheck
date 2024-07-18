@@ -1,3 +1,7 @@
+## 1.4.0
+
+- You need to now make an instance of the class to use the methods, instead of using static methods. Checkout the example in the README for more info.
+
 ## 1.3.0
 
 - Minor code cleanup and dependency updates.
