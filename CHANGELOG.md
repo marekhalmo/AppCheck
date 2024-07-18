@@ -1,3 +1,7 @@
+## 1.2.0
+
+- Minor code cleanup and dependency updates
+
 ## 1.0.0
 
 - Rewritten in Kotlin and with Null-Safety.
