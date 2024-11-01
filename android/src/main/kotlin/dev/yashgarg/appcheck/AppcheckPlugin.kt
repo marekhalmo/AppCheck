@@ -13,6 +13,8 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.*
 import kotlin.collections.*
+import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION_CODES.P
 
 /** AppcheckPlugin */
 class AppcheckPlugin : FlutterPlugin, MethodCallHandler {
@@ -69,7 +71,7 @@ class AppcheckPlugin : FlutterPlugin, MethodCallHandler {
             }
             return installedApps
         }
-
+    
     private fun getAppPackageInfo(uri: String): PackageInfo? {
         val pm = context.packageManager
         try {
@@ -87,8 +89,16 @@ class AppcheckPlugin : FlutterPlugin, MethodCallHandler {
             info.applicationInfo.loadLabel(context.packageManager).toString()
         app["package_name"] = info.packageName
         app["version_name"] = info.versionName
+        app["icon"] = DrawableUtil.drawableToByteArray(info.applicationInfo.loadIcon(context.packageManager))
+        app["version_code"] = getVersionCode(info)
         app["system_app"] = (info.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
         return app
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getVersionCode(packageInfo: PackageInfo): Long {
+        return if (SDK_INT < P) packageInfo.versionCode.toLong()
+        else packageInfo.longVersionCode
     }
 
     private fun isAppEnabled(packageName: String, result: Result) {
