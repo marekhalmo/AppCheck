@@ -87,9 +87,9 @@ class AppcheckPlugin : FlutterPlugin, MethodCallHandler {
 
         if (info.applicationInfo != null) {
             app["app_name"] = 
-                info.applicationInfo?.loadLabel(context.packageManager).toString()
-            app["icon"] = DrawableUtil.drawableToByteArray(info.applicationInfo?.loadIcon(context.packageManager))
-            app["system_app"] = (info.applicationInfo?.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+                info.applicationInfo!.loadLabel(context.packageManager).toString()
+            app["icon"] = DrawableUtil.drawableToByteArray(info.applicationInfo!.loadIcon(context.packageManager))
+            app["system_app"] = (info.applicationInfo!.flags and ApplicationInfo.FLAG_SYSTEM) != 0
         } else {
             app["app_name"] = "N/A"
             app["system_app"] = false
