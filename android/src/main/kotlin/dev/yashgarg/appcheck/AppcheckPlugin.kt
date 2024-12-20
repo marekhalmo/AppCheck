@@ -85,7 +85,7 @@ class AppcheckPlugin : FlutterPlugin, MethodCallHandler {
     private fun convertPackageInfoToJson(info: PackageInfo): Map<String, Any> {
         val app: MutableMap<String, Any> = HashMap()
 
-        if(info.applicationInfo != null) {
+        if (info.applicationInfo != null) {
             app["app_name"] = 
                 info.applicationInfo.loadLabel(context.packageManager).toString()
             app["icon"] = DrawableUtil.drawableToByteArray(info.applicationInfo.loadIcon(context.packageManager))
@@ -96,7 +96,7 @@ class AppcheckPlugin : FlutterPlugin, MethodCallHandler {
         }
         
         app["package_name"] = info.packageName
-        app["version_name"] = info.versionName        
+        app["version_name"] = info.versionName
         app["version_code"] = getVersionCode(info)
         
         return app
