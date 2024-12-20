@@ -95,7 +95,7 @@ class AppcheckPlugin : FlutterPlugin, MethodCallHandler {
             app["app_name"] = "N/A"
             app["system_app"] = false
         }
-        
+    
         app["package_name"] = info.packageName
         app["version_name"] = info.versionName
         app["version_code"] = getVersionCode(info)
