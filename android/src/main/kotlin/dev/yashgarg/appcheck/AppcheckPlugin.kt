@@ -86,7 +86,7 @@ class AppcheckPlugin : FlutterPlugin, MethodCallHandler {
         val app: MutableMap<String, Any> = HashMap()
 
         app["app_name"] =
-            info.applicationInfo.loadLabel(context.packageManager).toString()
+            info.applicationInfo?.loadLabel(context.packageManager).toString()
         app["package_name"] = info.packageName
         app["version_name"] = info.versionName
         app["icon"] = DrawableUtil.drawableToByteArray(info.applicationInfo.loadIcon(context.packageManager))
